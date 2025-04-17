@@ -3,13 +3,8 @@ package com.jpnoronha.cadastrodeninjas.Ninjas;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/ninjas")
 public class NinjaController {
-
-    @GetMapping("/boas-vindas")
-    public String boasVindas() {
-        return "Bem-vindo ao Cadastro de Ninjas!";
-    }
 
     @PostMapping("/criar")
     public String criarNinja() {
