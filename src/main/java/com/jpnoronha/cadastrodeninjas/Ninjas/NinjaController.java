@@ -2,23 +2,35 @@ package com.jpnoronha.cadastrodeninjas.Ninjas;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ninjas")
 public class NinjaController {
+
+    private NinjaService ninjaService;
+
+    public NinjaController(NinjaService ninjaService) {
+        this.ninjaService = ninjaService;
+    }
 
     @PostMapping("/criar")
     public String criarNinja() {
         return "Criado com sucesso!";
     }
 
-    @GetMapping("/todos")
-    public String mostrarTodosNinjas() {
-        return "Mostrar todos os ninjas!";
+    @GetMapping("/listar")
+    public List<NinjaModel> listarNinjas() {
+        return ninjaService.listarNinjas();
     }
 
-    @GetMapping("/ninja-id")
-    public String mostrarNinjaPorId() {
-        return "Mostra ninja por id";
+    @GetMapping("/listar/{id}")
+    public NinjaModel buscarNinjaPorId(@PathVariable Long id) {
+        NinjaModel ninja = ninjaService.buscarNinjaPorId(id);
+        if (ninja != null) {
+            return ninja;
+        }
+        return null;
     }
 
     @PutMapping("/alterar")
