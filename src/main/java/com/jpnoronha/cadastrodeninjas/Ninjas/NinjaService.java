@@ -17,14 +17,16 @@ public class NinjaService {
         this.ninjaMapper = new NinjaMapper();
     }
 
-    public List<NinjaModel> listarNinjas() {
+    public List<NinjaDTO> listarNinjas() {
         List<NinjaModel> ninjas = ninjaRepository.findAll();
-        return ninjas;
+        return ninjas.stream()
+                .map(ninjaMapper::map)
+                .toList();
     }
 
-    public NinjaModel buscarNinjaPorId(Long id) {
+    public NinjaDTO buscarNinjaPorId(Long id) {
         Optional<NinjaModel> ninja = ninjaRepository.findById(id);
-        return ninja.orElse(null);
+        return ninja.map(ninjaMapper::map).orElse(null);
     }
 
     public NinjaDTO criarNinja(NinjaDTO ninjaDTO) {
@@ -37,10 +39,13 @@ public class NinjaService {
         ninjaRepository.deleteById(id);
     }
 
-    public NinjaModel atualizarNinja(Long id, NinjaModel ninjaAtualizado) {
-        if (ninjaRepository.existsById(id)) {
+    public NinjaDTO atualizarNinja(Long id, NinjaDTO ninjaDTO) {
+        Optional<NinjaModel> ninja = ninjaRepository.findById(id);
+        if (ninja.isPresent()) {
+            NinjaModel ninjaAtualizado = ninjaMapper.map(ninjaDTO);
             ninjaAtualizado.setId(id);
-            return ninjaRepository.save(ninjaAtualizado);
+            NinjaModel ninjaSalvo = ninjaRepository.save(ninjaAtualizado);
+            return ninjaMapper.map(ninjaSalvo);
         }
         return null;
     }
