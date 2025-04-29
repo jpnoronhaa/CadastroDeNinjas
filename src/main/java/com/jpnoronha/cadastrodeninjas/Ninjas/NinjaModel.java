@@ -1,5 +1,6 @@
 package com.jpnoronha.cadastrodeninjas.Ninjas;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jpnoronha.cadastrodeninjas.Missoes.MissaoModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,5 +37,6 @@ public class NinjaModel {
 
     @ManyToOne
     @JoinColumn(name = "missao_id")
+    @JsonIgnore
     private MissaoModel missao;
 }
